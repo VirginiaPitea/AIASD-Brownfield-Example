@@ -14,6 +14,17 @@ The **PostHubAPI** is a blog API that provides complete CRUD (Create, Read, Upda
 - **CRUD for Posts**: Create, read, update, and delete blog posts.
 - **CRUD for Comments**: Manage comments associated with each post.
 - **User Registration**: Enable user registration and management to interact with the blog.
+- **Calculator Endpoint**: Perform basic arithmetic operations (add, subtract, multiply, divide) via API.
+
+## AI-Assisted Artifacts
+
+- **calculator.html**: Standalone browser calculator UI with keyboard support and basic arithmetic operations.
+- **PROJECT_REQUIREMENTS.md**: Project requirements document covering purpose, business rules, workflows, and tech stack architecture.
+- **AI log (PROJECT_REQUIREMENTS.md)**: `ai-logs/2026/05/21/0224c69e-c6eb-4d85-9422-09cc4686a992/conversation.md`
+- **Tech-stack instruction prompts**: Meta prompt files for generating stack-specific instruction files under `.github/prompts/meta/`.
+- **AI log (tech-stack instruction prompts)**: `ai-logs/2026/05/21/create-tech-stack-instruction-prompts-20260521/conversation.md`
+- **JWT auth instructions**: Repository guidance for JWT authentication and authorization at `.github/instructions/auth-jwt.instructions.md`.
+- **AI log (JWT auth instructions)**: `ai-logs/2026/05/21/create-auth-jwt-instructions-20260521/conversation.md`
 
 ## How to Use
 
