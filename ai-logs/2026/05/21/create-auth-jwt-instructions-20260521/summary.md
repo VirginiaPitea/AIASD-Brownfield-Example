@@ -42,11 +42,11 @@ Create a repository instruction file that defines JWT authentication and authori
 
 ## Artifacts Produced
 
-| Artifact | Type | Purpose |
-| --- | --- | --- |
-| `.github/instructions/auth-jwt.instructions.md` | Instruction | JWT auth/authorization conventions |
-| `ai-logs/2026/05/21/create-auth-jwt-instructions-20260521/conversation.md` | Log | AI conversation provenance |
-| `ai-logs/2026/05/21/create-auth-jwt-instructions-20260521/summary.md` | Summary | Resumable session overview |
+| Artifact                                                                   | Type        | Purpose                            |
+| -------------------------------------------------------------------------- | ----------- | ---------------------------------- |
+| `.github/instructions/auth-jwt.instructions.md`                            | Instruction | JWT auth/authorization conventions |
+| `ai-logs/2026/05/21/create-auth-jwt-instructions-20260521/conversation.md` | Log         | AI conversation provenance         |
+| `ai-logs/2026/05/21/create-auth-jwt-instructions-20260521/summary.md`      | Summary     | Resumable session overview         |
 
 ## Next Steps
 
