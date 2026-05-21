@@ -1,0 +1,506 @@
+<!--
+ai_generated: true
+model: "openai/gpt-5.3-codex@unknown"
+operator: "github-copilot"
+chat_id: "local-chat-2026-05-18-calculator-html"
+prompt: |
+  create a calculator.html
+started: "2026-05-18T00:00:00Z"
+ended: "2026-05-18T00:00:00Z"
+task_durations:
+  - task: "html-calculator-creation"
+    duration: "00:00:00"
+total_duration: "00:00:00"
+ai_log: "ai-logs/2026/05/18/local-chat-2026-05-18-calculator-html/conversation.md"
+source: "github-copilot-chat"
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Calculator</title>
+    <style>
+      :root {
+        --bg-top: #ffb3b3;
+        --bg-mid: #e33d3d;
+        --bg-bot: #8f0f0f;
+        --panel: #121212;
+        --panel-soft: #1b1b1b;
+        --text: #f8f5ef;
+        --text-muted: #b9b5ac;
+        --accent: #f0a63b;
+        --accent-2: #ee7a2d;
+        --danger: #d24444;
+        --ok: #3ca560;
+        --radius: 22px;
+        --shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Trebuchet MS", "Segoe UI", Tahoma, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at 15% 10%,
+            rgba(255, 255, 255, 0.45),
+            transparent 35%
+          ),
+          radial-gradient(
+            circle at 85% 75%,
+            rgba(255, 255, 255, 0.25),
+            transparent 30%
+          ),
+          linear-gradient(
+            140deg,
+            var(--bg-top),
+            var(--bg-mid) 50%,
+            var(--bg-bot)
+          );
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      .shell {
+        width: min(100%, 430px);
+        background: linear-gradient(180deg, #161616, #0f0f0f 65%);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        overflow: hidden;
+        transform: translateY(14px);
+        opacity: 0;
+        animation: rise-in 520ms ease forwards;
+      }
+
+      .header {
+        padding: 18px 20px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .brand {
+        font-size: 0.9rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: linear-gradient(180deg, var(--accent), var(--accent-2));
+        box-shadow: 0 0 18px rgba(240, 166, 59, 0.7);
+      }
+
+      .display-wrap {
+        padding: 4px 20px 20px;
+      }
+
+      .history {
+        min-height: 1.2em;
+        text-align: right;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+        word-break: break-all;
+      }
+
+      .display {
+        width: 100%;
+        border: 0;
+        border-radius: 14px;
+        background: var(--panel-soft);
+        color: var(--text);
+        text-align: right;
+        font-size: clamp(1.8rem, 5vw, 2.5rem);
+        padding: 16px;
+        outline: none;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+      }
+
+      .keys {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        padding: 0 20px 22px;
+      }
+
+      button {
+        border: 0;
+        border-radius: 14px;
+        padding: 14px 10px;
+        font-size: 1.05rem;
+        color: var(--text);
+        background: #222;
+        cursor: pointer;
+        transition:
+          transform 120ms ease,
+          filter 140ms ease,
+          background 140ms ease;
+        will-change: transform;
+      }
+
+      button:hover {
+        filter: brightness(1.08);
+        transform: translateY(-1px);
+      }
+
+      button:active {
+        transform: translateY(0);
+        filter: brightness(0.96);
+      }
+
+      .op {
+        background: #30271d;
+        color: #ffdca8;
+      }
+
+      .eval {
+        background: linear-gradient(180deg, var(--accent), var(--accent-2));
+        color: #1b1309;
+        font-weight: 700;
+      }
+
+      .danger {
+        background: #3a1f1f;
+        color: #ffb5b5;
+      }
+
+      .wide {
+        grid-column: span 2;
+      }
+
+      .status {
+        min-height: 1.4em;
+        padding: 0 20px 18px;
+        color: var(--ok);
+        font-size: 0.92rem;
+      }
+
+      .status.error {
+        color: var(--danger);
+      }
+
+      @keyframes rise-in {
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 420px) {
+        .shell {
+          border-radius: 18px;
+        }
+
+        .keys {
+          gap: 8px;
+          padding: 0 14px 16px;
+        }
+
+        .header,
+        .display-wrap,
+        .status {
+          padding-left: 14px;
+          padding-right: 14px;
+        }
+
+        button {
+          padding: 12px 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell" aria-label="Calculator">
+      <section class="header">
+        <div class="brand">Pocket Calc</div>
+        <div class="dot" aria-hidden="true"></div>
+      </section>
+
+      <section class="display-wrap">
+        <div id="history" class="history" aria-live="polite"></div>
+        <input
+          id="display"
+          class="display"
+          type="text"
+          inputmode="decimal"
+          value="0"
+          aria-label="Calculator display"
+        />
+      </section>
+
+      <section class="keys" aria-label="Calculator keys">
+        <button class="danger" data-action="clear">AC</button>
+        <button class="danger" data-action="back">DEL</button>
+
+        <button class="op" data-value="%">%</button>
+        <button class="op" data-value="/">/</button>
+
+        <button data-value="7">7</button>
+        <button data-value="8">8</button>
+        <button data-value="9">9</button>
+        <button class="op" data-value="*">x</button>
+
+        <button data-value="4">4</button>
+        <button data-value="5">5</button>
+        <button data-value="6">6</button>
+        <button class="op" data-value="-">-</button>
+
+        <button data-value="1">1</button>
+        <button data-value="2">2</button>
+        <button data-value="3">3</button>
+        <button class="op" data-value="+">+</button>
+
+        <button class="wide" data-value="0">0</button>
+        <button data-value=".">.</button>
+        <button class="eval" data-action="equals">=</button>
+      </section>
+
+      <section id="status" class="status" aria-live="polite"></section>
+    </main>
+
+    <script>
+      (function () {
+        var display = document.getElementById("display");
+        var history = document.getElementById("history");
+        var status = document.getElementById("status");
+        var keys = document.querySelector(".keys");
+
+        var expression = "";
+        var lastResult = null;
+
+        function setStatus(message, isError) {
+          status.textContent = message || "";
+          status.classList.toggle("error", !!isError);
+        }
+
+        function render() {
+          display.value = expression || "0";
+        }
+
+
+        // Evergreen: Safe expression evaluator for +, -, *, /, %, and decimals
+        function safeEvaluate(expr) {
+          // Only allow numbers, operators, parentheses, and spaces
+          if (!/^[-+*/%.() 0-9]+$/.test(expr)) return null;
+          try {
+            // Tokenize
+            const tokens = expr.match(/\d+\.\d+|\d+|[+\-*/%()]|\./g);
+            if (!tokens) return null;
+
+            // Shunting Yard Algorithm to convert to RPN
+            const output = [];
+            const ops = [];
+            const prec = { '+': 1, '-': 1, '*': 2, '/': 2, '%': 2 };
+            for (let t of tokens) {
+              if (/^\d+(\.\d+)?$/.test(t)) {
+                output.push(parseFloat(t));
+              } else if (t in prec) {
+                while (ops.length && prec[ops[ops.length-1]] >= prec[t]) {
+                  output.push(ops.pop());
+                }
+                ops.push(t);
+              } else if (t === '(') {
+                ops.push(t);
+              } else if (t === ')') {
+                while (ops.length && ops[ops.length-1] !== '(') {
+                  output.push(ops.pop());
+                }
+                if (ops.length && ops[ops.length-1] === '(') ops.pop();
+                else return null;
+              }
+            }
+            while (ops.length) {
+              const op = ops.pop();
+              if (op === '(' || op === ')') return null;
+              output.push(op);
+            }
+
+            // Evaluate RPN
+            const stack = [];
+            for (let t of output) {
+              if (typeof t === 'number') stack.push(t);
+              else {
+                if (stack.length < 2) return null;
+                const b = stack.pop();
+                const a = stack.pop();
+                let r = null;
+                if (t === '+') r = a + b;
+                else if (t === '-') r = a - b;
+                else if (t === '*') r = a * b;
+                else if (t === '/') r = b === 0 ? null : a / b;
+                else if (t === '%') r = b === 0 ? null : a % b;
+                else return null;
+                if (r === null || !isFinite(r)) return null;
+                stack.push(r);
+              }
+            }
+            return stack.length === 1 ? stack[0] : null;
+          } catch {
+            return null;
+          }
+        }
+
+        function sanitizeExpression(value) {
+          return value.replace(/[^0-9+\-*/%.() ]/g, "");
+        }
+
+        function evaluate() {
+          if (!expression) {
+            return;
+          }
+          if (/[*+\/%-]$/.test(expression)) {
+            setStatus("Expression cannot end with an operator.", true);
+            return;
+          }
+          var sanitized = sanitizeExpression(expression);
+          var result = safeEvaluate(sanitized);
+          if (result === null) {
+            setStatus("Invalid expression.", true);
+            return;
+          }
+          history.textContent = expression + " =";
+          expression = String(Number(result.toFixed(10)));
+          lastResult = expression;
+          setStatus("Done");
+          render();
+        }
+              return;
+            }
+            if (ops.indexOf(last) !== -1) {
+              expression = expression.slice(0, -1) + value;
+              render();
+              return;
+            }
+          }
+
+          if (value === ".") {
+            var parts = expression.split(/[+\-*/%]/);
+            var currentPart = parts[parts.length - 1];
+            if (currentPart.indexOf(".") !== -1) {
+              return;
+            }
+          }
+
+          expression += value;
+          render();
+        }
+
+        function evaluate() {
+          if (!expression) {
+            return;
+          }
+
+          if (/[*+\/%-]$/.test(expression)) {
+            setStatus("Expression cannot end with an operator.", true);
+            return;
+          }
+
+          try {
+            var sanitized = sanitizeExpression(expression);
+            var result = Function("return (" + sanitized + ")")();
+
+            if (!Number.isFinite(result)) {
+              throw new Error("Math error");
+            }
+
+            history.textContent = expression + " =";
+            expression = String(Number(result.toFixed(10)));
+            lastResult = expression;
+            setStatus("Done");
+            render();
+          } catch (err) {
+            setStatus("Invalid expression.", true);
+          }
+        }
+
+        keys.addEventListener("click", function (event) {
+          var target = event.target;
+          if (!(target instanceof HTMLButtonElement)) {
+            return;
+          }
+
+          var action = target.getAttribute("data-action");
+          var value = target.getAttribute("data-value");
+
+          setStatus("");
+
+          if (action === "clear") {
+            clearAll();
+            return;
+          }
+
+          if (action === "back") {
+            backspace();
+            return;
+          }
+
+          if (action === "equals") {
+            evaluate();
+            return;
+          }
+
+          if (value) {
+            appendValue(value);
+          }
+        });
+
+        display.addEventListener("input", function () {
+          expression = sanitizeExpression(display.value);
+          if (display.value !== expression) {
+            display.value = expression;
+          }
+        });
+
+        document.addEventListener("keydown", function (event) {
+          if (document.activeElement === display) {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              evaluate();
+            }
+
+            if (event.key === "Escape") {
+              clearAll();
+            }
+
+            return;
+          }
+
+          var key = event.key;
+          if (/^[0-9]$/.test(key) || "+-*/%.".indexOf(key) !== -1) {
+            appendValue(key);
+            return;
+          }
+
+          if (key === "Enter" || key === "=") {
+            event.preventDefault();
+            evaluate();
+            return;
+          }
+
+          if (key === "Backspace") {
+            backspace();
+            return;
+          }
+
+          if (key === "Escape") {
+            clearAll();
+          }
+        });
+
+        clearAll();
+      })();
+    </script>
+  </body>
+</html>
